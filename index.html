@@ -19,7 +19,8 @@
     <meta property="og:image" content="https://indadady.github.io/260911_Chuncheon/assets/images/og-thumb.jpg">
     <meta property="og:image:width" content="1920">
     <meta property="og:image:height" content="1272">
-    <meta property="og:image:alt" content="남이섬 대표 전경">
+    <meta property="og:image:alt" content="춘천 소양강 스카이워크 — 9월 초가을 전경">
+    <link rel="icon" type="image/png" href="assets/images/logo-senior.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -114,7 +115,8 @@
     <!-- Hero -->
     <section id="home" class="hero-bg min-h-[65vh] flex items-center justify-center text-center px-4">
         <div class="animate-fade-in-up text-white">
-            <div class="bg-white/95 backdrop-blur px-5 py-2.5 rounded-full inline-flex items-center gap-2 mb-6 border border-white/20 shadow-xl text-slate-800">
+            <div class="bg-white/95 backdrop-blur px-5 py-2.5 rounded-full inline-flex items-center gap-2.5 mb-6 border border-white/20 shadow-xl text-slate-800">
+                <img src="assets/images/logo-senior.png" alt="대한노인회" class="h-8 w-8 md:h-9 md:w-9 object-contain">
                 <span class="text-sm md:text-base font-bold tracking-tight">대한노인회 태백지회</span>
             </div>
             <h1 class="text-4xl md:text-6xl font-black mb-4 drop-shadow-2xl font-title leading-tight">
@@ -240,17 +242,20 @@
             </div>
             <div class="flex flex-wrap justify-center gap-2 mb-6">
                 <button onclick="filterMap('all')" id="btn-map-all" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-slate-800 text-white shadow-lg transition-all">전체 동선</button>
-                <button onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all">당일 상세</button>
+                <button onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all">당일 현지</button>
             </div>
-            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">태백 → 가평·춘천 → 제천 → 태백 전체 이동 구간</p>
+            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">태백 ↔ 가평·춘천·제천 장거리 이동 구간 (점선)</p>
             <div class="max-w-5xl mx-auto border-8 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden bg-white relative z-10">
                 <div id="map"></div>
+                <div id="map-status" class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
+                    <i class="fa-solid fa-map-location-dot text-orange-500 mr-1"></i> 동선 렌더링 중...
+                </div>
             </div>
             <div class="max-w-5xl mx-auto mt-6 flex flex-wrap justify-center gap-6 text-[11px] font-bold text-slate-500">
-                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#004098]"></span>출발·도착 (태백)</div>
-                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#22c55e]"></span>자연 산책 (가평·남이섬)</div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#004098]"></span>태백 출발·도착</div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#22c55e]"></span>자연 산책 (수목원·남이섬)</div>
                 <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#f97316]"></span>춘천 (중식·방문)</div>
-                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#8b5cf6]"></span>제천 (석식)</div>
+                <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-[#8b5cf6]"></span>제천 (석식·귀환)</div>
             </div>
         </div>
     </section>
@@ -297,7 +302,6 @@
                         </div>
 
                         <div class="schedule-media">
-                            <img src="assets/images/day1-dakgalbi.jpg" alt="춘천닭갈비" class="schedule-thumb">
                             <div class="schedule-desc space-y-1">
                                 <p class="text-xs font-black text-orange-500 tracking-widest">12:00 · 중식</p>
                                 <h4 class="font-bold text-lg text-slate-800">춘천닭갈비</h4>
@@ -320,7 +324,6 @@
                         </div>
 
                         <div class="schedule-media">
-                            <img src="assets/images/day1-jecheon.jpg" alt="제천 청풍 일대" class="schedule-thumb">
                             <div class="schedule-desc space-y-1">
                                 <p class="text-xs font-black text-violet-600 tracking-widest">17:30 · 석식</p>
                                 <h4 class="font-bold text-lg text-slate-800">제천 고기 샤브샤브</h4>
@@ -439,7 +442,7 @@
                     </div>
                     <h4 class="font-bold text-xl text-slate-800">현장 지원</h4>
                     <p class="text-sm text-slate-500 mt-1 mb-5">일정 코디네이팅 및 비상 대기</p>
-                    <a href="tel:010-2645-7524" class="bg-teal-600 text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-teal-700 transition">문정희 실장: 010-2645-7524</a>
+                    <a href="tel:010-4249-4026" class="bg-teal-600 text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-teal-700 transition">조혁 이사: 010-4249-4026</a>
                 </div>
                 <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-blue-50 transition-all">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform">
@@ -504,7 +507,10 @@
     <!-- Print A4 -->
     <div id="print-area">
         <div class="border-b-4 border-black pb-3 mb-3 text-center">
-            <h1 class="text-2xl font-black mb-1">[대한노인회 태백지회] 2026 춘천 힐링 당일여행 일정표</h1>
+            <div class="flex items-center justify-center gap-3 mb-2">
+                <img src="assets/images/logo-senior.png" alt="대한노인회" style="height: 36px; width: 36px; object-fit: contain;">
+                <h1 class="text-2xl font-black mb-0">[대한노인회 태백지회] 2026 춘천 힐링 당일여행 일정표</h1>
+            </div>
             <p class="text-sm text-gray-600 font-bold tracking-widest uppercase italic">2026. 09. 11 (금) | Chuncheon Day Trip · 안내 초안</p>
         </div>
         <div class="mb-3 flex justify-between text-sm font-bold px-1">
@@ -547,7 +553,7 @@
         </table>
         <div class="mt-4 pt-2 flex flex-wrap justify-between items-center gap-2 text-xs font-bold text-slate-700 print-contacts">
             <span>대표 이재명 010-9443-7881</span>
-            <span>현장 문정희 010-2645-7524</span>
+            <span>현장 조혁 이사 010-4249-4026</span>
             <span>가이드 · 기사 미정</span>
         </div>
         <div class="mt-3 flex justify-between items-center">
@@ -662,68 +668,122 @@
         }
         fetchWeather();
 
-        /* Map */
-        const spots = {
-            taebaek: { name: '태백 (출발·도착)', coords: [37.1641, 128.9856], color: '#004098' },
-            garden: { name: '아침고요수목원', coords: [37.7436, 127.3524], color: '#22c55e' },
-            nami: { name: '남이섬', coords: [37.7916, 127.5253], color: '#22c55e' },
-            chuncheon: { name: '춘천 (닭갈비·주니어클럽)', coords: [37.8813, 127.7298], color: '#f97316' },
-            jecheon: { name: '제천 (석식)', coords: [37.1326, 128.1910], color: '#8b5cf6' }
+        /* ===== 지도 (제주 가이드북 동선 품질) ===== */
+        let mapInited = false;
+        let dayLayers = {};
+        let currentMap = null;
+        let allSpots = {};
+        const mapHints = {
+            all: '태백 ↔ 가평·춘천·제천 장거리 이동 구간 (점선)',
+            day1: '당일 현지 동선 확대 — 수목원·남이섬·춘천·제천 (실선)'
         };
-        const routes = {
-            all: {
-                keys: ['taebaek', 'garden', 'nami', 'chuncheon', 'jecheon'],
-                line: [[37.1641, 128.9856], [37.7436, 127.3524], [37.8813, 127.7298], [37.1326, 128.1910], [37.1641, 128.9856]],
-                dashed: true,
-                zoom: [[36.9, 127.1], [38.1, 129.2]],
-                hint: '태백 → 가평·춘천 → 제천 → 태백 전체 이동 구간'
-            },
-            day1: {
-                keys: ['garden', 'nami', 'chuncheon', 'jecheon'],
-                line: [[37.7436, 127.3524], [37.7916, 127.5253], [37.8813, 127.7298], [37.1326, 128.1910]],
-                dashed: false,
-                zoom: [[36.95, 127.2], [38.05, 128.0]],
-                hint: '당일 현지 동선 확대 (수목원·남이섬·춘천·제천)'
+
+        function initMap() {
+            if (mapInited || !window.L) return;
+            mapInited = true;
+            const status = document.getElementById('map-status');
+
+            const spots = {
+                taebaek: [37.1641, 128.9856],
+                garden: [37.7436, 127.3524],
+                nami: [37.7916, 127.5253],
+                chuncheon: [37.8813, 127.7298],
+                jecheon: [37.1326, 128.1910]
+            };
+            allSpots = spots;
+
+            currentMap = L.map('map', { scrollWheelZoom: false });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+            }).addTo(currentMap);
+
+            const createIcon = (color, emoji, idx) => L.divIcon({
+                className: 'custom-icon',
+                html: `<div style="background-color:${color}; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; opacity:0; animation:popIn 0.5s forwards; animation-delay:${idx * 0.2}s;">${emoji}</div>`,
+                iconSize: [36, 36], iconAnchor: [18, 18], tooltipAnchor: [0, -18]
+            });
+
+            const markers = {
+                tb: L.marker(spots.taebaek, { icon: createIcon('#004098', '🚌', 1) }).bindTooltip('태백 (출발·도착)', { direction: 'top' }),
+                gd: L.marker(spots.garden, { icon: createIcon('#22c55e', '🌿', 2) }).bindTooltip('아침고요수목원', { direction: 'top' }),
+                nm: L.marker(spots.nami, { icon: createIcon('#16a34a', '🏝️', 3) }).bindTooltip('남이섬', { direction: 'top' }),
+                cc: L.marker(spots.chuncheon, { icon: createIcon('#f97316', '🤝', 4) }).bindTooltip('춘천 (중식·주니어클럽)', { direction: 'top' }),
+                jc: L.marker(spots.jecheon, { icon: createIcon('#8b5cf6', '🍲', 5) }).bindTooltip('제천 (석식)', { direction: 'top' })
+            };
+
+            // 전체: 장거리 이동 점선 / 당일: 현지 실선
+            const paths = {
+                haulOut: L.polyline([spots.taebaek, spots.garden], { color: '#004098', weight: 5, opacity: 0.75, dashArray: '10,10' }),
+                local: L.polyline([spots.garden, spots.nami, spots.chuncheon, spots.jecheon], { color: '#f97316', weight: 5, opacity: 0.85 }),
+                haulBack: L.polyline([spots.jecheon, spots.taebaek], { color: '#004098', weight: 5, opacity: 0.75, dashArray: '10,10' }),
+                dayLocal: L.polyline([spots.garden, spots.nami, spots.chuncheon, spots.jecheon], { color: '#f97316', weight: 5, opacity: 0.9 })
+            };
+
+            dayLayers = {
+                all: L.layerGroup([paths.haulOut, paths.local, paths.haulBack, markers.tb, markers.gd, markers.nm, markers.cc, markers.jc]),
+                day1: L.layerGroup([paths.dayLocal, markers.gd, markers.nm, markers.cc, markers.jc])
+            };
+
+            if (status) status.textContent = '동선 준비 완료';
+            filterMap('all');
+        }
+
+        function animatePath(layer) {
+            const path = layer._path;
+            if (!path) return;
+            const len = path.getTotalLength();
+            path.style.strokeDasharray = len;
+            path.style.strokeDashoffset = len;
+            path.getBoundingClientRect();
+            path.style.transition = 'stroke-dashoffset 2s ease-in-out';
+            path.style.strokeDashoffset = '0';
+            setTimeout(() => { path.style.transition = ''; }, 2000);
+        }
+
+        window.filterMap = function (day) {
+            if (!currentMap) return;
+            document.querySelectorAll('.map-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white', 'shadow-lg');
+                btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+            });
+            const activeBtn = document.getElementById('btn-map-' + day);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-slate-800', 'text-white', 'shadow-lg');
+                activeBtn.classList.remove('bg-white', 'text-slate-600');
+            }
+
+            const hint = document.getElementById('map-hint');
+            if (hint) hint.textContent = mapHints[day] || '';
+
+            Object.values(dayLayers).forEach(l => currentMap.removeLayer(l));
+
+            let targetBounds;
+            if (day === 'all') {
+                dayLayers.all.addTo(currentMap);
+                targetBounds = L.latLngBounds(Object.values(allSpots));
+                currentMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom: 8 });
+            } else {
+                dayLayers[day].addTo(currentMap);
+                dayLayers[day].eachLayer(layer => {
+                    if (layer instanceof L.Polyline) setTimeout(() => animatePath(layer), 100);
+                });
+                dayLayers[day].eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        const originalIcon = layer.options.icon;
+                        layer.setIcon(L.divIcon({ className: 'hidden' }));
+                        setTimeout(() => layer.setIcon(originalIcon), 50);
+                    }
+                });
+                // 현지 확대: 태백 제외, 수목원~제천
+                targetBounds = L.latLngBounds([allSpots.garden, allSpots.nami, allSpots.chuncheon, allSpots.jecheon]);
+                currentMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom: 10 });
             }
         };
 
-        let map, layerGroup;
-        function makeIcon(color) {
-            return L.divIcon({
-                className: 'custom-icon',
-                html: `<div style="width:18px;height:18px;border-radius:50%;background:${color};animation:popIn .45s ease;"></div>`,
-                iconSize: [18, 18], iconAnchor: [9, 9]
-            });
-        }
-        function initMap() {
-            map = L.map('map', { scrollWheelZoom: false }).setView([37.5, 128.2], 8);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap', maxZoom: 18
-            }).addTo(map);
-            layerGroup = L.layerGroup().addTo(map);
-            filterMap('all');
-        }
-        function filterMap(mode) {
-            document.querySelectorAll('.map-btn').forEach(b => {
-                b.className = 'map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all';
-            });
-            const active = document.getElementById('btn-map-' + mode);
-            if (active) active.className = 'map-btn px-6 py-2 rounded-full text-sm font-bold bg-slate-800 text-white shadow-lg transition-all';
-
-            const route = routes[mode];
-            document.getElementById('map-hint').textContent = route.hint;
-            layerGroup.clearLayers();
-            route.keys.forEach(k => {
-                const s = spots[k];
-                L.marker(s.coords, { icon: makeIcon(s.color) }).bindTooltip(s.name, { permanent: false }).addTo(layerGroup);
-            });
-            const line = L.polyline(route.line, {
-                color: '#004098', weight: 3, opacity: 0.75,
-                dashArray: route.dashed ? '8 8' : null
-            }).addTo(layerGroup);
-            map.fitBounds(route.zoom || line.getBounds(), { padding: [40, 40], maxZoom: mode === 'all' ? 8 : 10 });
-        }
-        initMap();
+        const mapObserver = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) { initMap(); mapObserver.disconnect(); }
+        }, { threshold: 0.1 });
+        mapObserver.observe(document.getElementById('map-section'));
     </script>
 </body>
 </html>
