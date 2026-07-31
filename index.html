@@ -70,14 +70,85 @@
             mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
         input:checked + span { text-decoration: line-through; color: #94a3b8; transition: all 0.3s ease; }
+        /* A4 print sheet — Tourmaker standard itinerary form */
+        #print-area {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #1e293b;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        #print-area .print-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 2px solid #004098; padding-bottom: 12px; margin-bottom: 18px;
+        }
+        #print-area .print-header img { height: 36px; object-fit: contain; }
+        #print-area .print-doc-info { text-align: right; font-size: 12px; color: #475569; }
+        #print-area .print-title { text-align: center; margin-bottom: 16px; }
+        #print-area .print-title h1 { font-size: 22px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px; margin: 0; }
+        #print-area .print-overview {
+            display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+            background: #f8fafc; border: 1px solid #94a3b8; border-radius: 6px;
+            padding: 10px 16px; margin-bottom: 16px; font-size: 13px;
+        }
+        #print-area .print-overview div { display: flex; gap: 6px; }
+        #print-area .print-overview .label { font-weight: 700; color: #004098; }
+        #print-area .print-table {
+            width: 100%; border-collapse: collapse; margin-bottom: 14px;
+            font-size: 13px; table-layout: fixed;
+        }
+        #print-area .print-table th,
+        #print-area .print-table td {
+            border: 1px solid #94a3b8; padding: 12px 14px; vertical-align: top; word-break: keep-all;
+        }
+        #print-area .print-table th {
+            background: #f8fafc; font-weight: 700; text-align: center; padding: 10px; font-size: 13.5px;
+        }
+        #print-area .col-date { width: 14%; text-align: center; font-weight: 700; background: #f8fafc; vertical-align: middle; }
+        #print-area .col-desc { width: 70%; }
+        #print-area .col-meal { width: 16%; text-align: center; vertical-align: middle; }
+        #print-area .day-divider td { border-top: 2px solid #004098; }
+        #print-area .time-flow { margin-bottom: 6px; font-weight: 500; }
+        #print-area .time-tag { display: inline-block; color: #004098; font-weight: 700; margin-right: 4px; }
+        #print-area .highlight { font-weight: 700; color: #0f172a; }
+        #print-area .desc-list { list-style: none; margin: 6px 0 0; padding-left: 4px; }
+        #print-area .desc-list li { position: relative; padding-left: 14px; margin-bottom: 5px; line-height: 1.55; }
+        #print-area .desc-list li::before {
+            content: '■'; font-size: 8px; position: absolute; left: 0; top: 5px; color: #004098;
+        }
+        #print-area .meal-wrapper {
+            display: flex; flex-direction: column; gap: 12px; justify-content: center;
+            height: 100%; text-align: left; padding-left: 4px;
+        }
+        #print-area .meal-simple { display: flex; align-items: flex-start; font-size: 13px; color: #1e293b; line-height: 1.4; }
+        #print-area .meal-simple strong { color: #004098; margin-right: 4px; width: 22px; flex-shrink: 0; }
+        #print-area .meal-menu { display: flex; flex-direction: column; }
+        #print-area .meal-sub { font-size: 12px; margin-top: 2px; color: #475569; }
+        #print-area .print-remarks {
+            font-size: 11.5px; color: #64748b; text-align: right; font-weight: 500; margin-bottom: 16px;
+        }
+        #print-area .print-footer {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            padding-top: 14px; border-top: 1px solid #e2e8f0;
+        }
+        #print-area .print-footer .brand-link {
+            font-size: 11px; color: #6c757d; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+        }
+        #print-area .print-footer .manager-info {
+            text-align: right; border-left: 3px solid #004098; padding-left: 12px;
+        }
+        #print-area .print-footer .names { color: #0f172a; font-weight: 700; font-size: 13px; }
         @media screen { #print-area { display: none !important; } }
         @media print {
-            @page { size: A4 portrait; margin: 10mm; }
+            @page { size: A4 portrait; margin: 12mm 10mm; }
             body { background: white !important; margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .print\:hidden, header, footer, section:not(#print-area), .no-print, #toast { display: none !important; }
+            .print\:hidden, header, footer, section:not(#print-area), .no-print, #toast, #custom-confirm { display: none !important; }
             #print-area { display: block !important; }
-            table td, table th { word-break: keep-all; padding: 6px !important; }
-            tr { page-break-inside: avoid; }
+            #print-area .print-table { border: 2px solid #1e293b; }
+            #print-area .print-table th { border: 1px solid #1e293b; background: #f8fafc !important; }
+            #print-area .print-table td { border: 1px solid #1e293b; }
+            #print-area .day-divider td { border-top: 2px solid #1e293b !important; }
+            tr, td { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -521,64 +592,74 @@
 
     </div><!-- end print:hidden -->
 
-    <!-- Print A4 -->
+    <!-- Print A4 (투어메이커 표준 일정표 양식) -->
     <div id="print-area">
-        <div class="border-b-4 border-black pb-3 mb-3 text-center">
-            <div class="flex items-center justify-center gap-3 mb-2">
-                <img src="assets/images/logo-senior.png" alt="대한노인회" style="height: 36px; width: 36px; object-fit: contain;">
-                <h1 class="text-2xl font-black mb-0">[대한노인회 태백지회] 2026 춘천 힐링 당일여행 일정표</h1>
+        <div class="print-header">
+            <div class="logo">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="투어메이커 로고">
             </div>
-            <p class="text-sm text-gray-600 font-bold tracking-widest uppercase italic">2026. 09. 11 (금) | Chuncheon Day Trip · 안내 초안</p>
+            <div class="print-doc-info">문서번호: TM-260911-TB · 안내 초안</div>
         </div>
-        <div class="mb-3 flex justify-between text-sm font-bold px-1">
-            <span>■ 대상: 대한노인회 태백지회</span>
-            <span>■ 형태: 당일 전세버스 · 숙박 없음</span>
+
+        <div class="print-title">
+            <h1>[대한노인회 태백지회] 2026 춘천 힐링 당일여행 일정표</h1>
         </div>
-        <table class="w-full border-collapse border-2 border-black text-[13px]" style="table-layout: fixed;">
+
+        <div class="print-overview">
+            <div><span class="label">행사기간</span> 2026. 09. 11 (금) · 당일</div>
+            <div><span class="label">행사인원</span> 37~39명 예상</div>
+            <div><span class="label">이용교통</span> 전세버스 · 숙박 없음</div>
+        </div>
+
+        <table class="print-table">
             <thead>
-                <tr class="bg-gray-200 text-center font-black h-10">
-                    <th class="border-2 border-black" style="width: 11%;">일자/시간</th>
-                    <th class="border-2 border-black" style="width: 75%;">상세 일정</th>
-                    <th class="border-2 border-black" style="width: 14%;">식사</th>
+                <tr>
+                    <th class="col-date">일자</th>
+                    <th class="col-desc">상세 일정 및 동선</th>
+                    <th class="col-meal">식사</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="border-2 border-black text-center font-black bg-gray-50 leading-relaxed align-top p-2">
-                        <span class="text-[14px]">당일<br>9/11(금)</span><br><br>
-                        <span class="font-bold text-xs">06:00출발<br>21:30도착</span>
-                    </td>
-                    <td class="border-2 border-black p-3 leading-relaxed align-top">
-                        <ul class="space-y-2 font-medium" style="list-style-type: none; padding-left: 0;">
-                            <li>■ 06:00 태백 출발</li>
-                            <li>■ 07:30 조식 (영월랜드)</li>
-                            <li><span class="font-black" style="color:#004098;">■ 10:00 아침고요수목원</span></li>
-                            <li>■ 12:00 중식 (춘천닭갈비)</li>
-                            <li><span class="font-black" style="color:#004098;">■ 13:40 삼악산 호수케이블카 체험</span></li>
-                            <li><span class="font-black" style="color:#004098;">■ 15:00 춘천 시니어클럽 방문</span></li>
-                            <li>■ 16:00 춘천 출발</li>
-                            <li>■ 18:30 석식 (샤브올데이 제천영천점)</li>
-                            <li>■ 20:00 제천 출발 → 21:30 태백 도착 · 해산</li>
+                <tr class="day-divider">
+                    <td class="col-date"><strong>당일</strong><br>9/11 (금)<br><br><span style="font-size:11px;font-weight:600;">06:00 출발<br>21:30 도착</span></td>
+                    <td class="col-desc">
+                        <div class="time-flow"><span class="time-tag">06:00</span> 태백 집결 · 전세버스 출발</div>
+                        <ul class="desc-list">
+                            <li><span class="time-tag">07:30</span> 조식 · <span class="highlight">영월랜드</span></li>
+                            <li><span class="time-tag">10:00</span> <span class="highlight">아침고요수목원</span> 산책</li>
+                            <li><span class="time-tag">12:00</span> 중식 · <span class="highlight">춘천닭갈비</span> (식당명·메뉴 조율 중)</li>
+                            <li><span class="time-tag">13:40</span> <span class="highlight">삼악산 호수케이블카</span> 체험</li>
+                            <li><span class="time-tag">15:00</span> <span class="highlight">춘천 시니어클럽</span> 방문 · 친교</li>
+                            <li><span class="time-tag">16:00</span> 춘천 출발 → 제천 이동</li>
+                            <li><span class="time-tag">18:30</span> 석식 · <span class="highlight">샤브올데이 제천영천점</span></li>
+                            <li><span class="time-tag">20:00</span> 제천 출발 → 태백 귀환</li>
                         </ul>
+                        <div class="time-flow" style="margin-top:10px;"><span class="time-tag">21:30</span> 태백 도착 · 해산</div>
                     </td>
-                    <td class="border-2 border-black text-center font-bold align-middle">
-                        <div class="flex flex-col justify-center gap-4 py-4">
-                            <div><span class="bg-gray-200 px-2 py-0.5 rounded text-xs">조식</span><br>영월랜드</div>
-                            <div><span class="bg-gray-200 px-2 py-0.5 rounded text-xs">중식</span><br>춘천닭갈비</div>
-                            <div><span class="bg-gray-200 px-2 py-0.5 rounded text-xs">석식</span><br>샤브올데이</div>
+                    <td class="col-meal">
+                        <div class="meal-wrapper">
+                            <div class="meal-simple"><strong>조:</strong><div class="meal-menu">영월랜드</div></div>
+                            <div class="meal-simple"><strong>중:</strong><div class="meal-menu">춘천닭갈비<span class="meal-sub">(식당 조율 중)</span></div></div>
+                            <div class="meal-simple"><strong>석:</strong><div class="meal-menu">샤브올데이<span class="meal-sub">(제천영천점)</span></div></div>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="mt-4 pt-2 flex flex-wrap justify-between items-center gap-2 text-xs font-bold text-slate-700 print-contacts">
-            <span>대표 이재명 010-9443-7881</span>
-            <span>현장 조혁 이사 010-4249-4026</span>
-            <span>가이드 · 기사 미정</span>
+
+        <div class="print-remarks">
+            ※ 상기 일정은 현지 사정에 의하여 변동될 수 있습니다.<br>
+            ※ 본 일정표는 안내 초안이며, 세부 동선·식당은 조율 후 확정 안내드립니다.
         </div>
-        <div class="mt-3 flex justify-between items-center">
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" style="height: 20px;" alt="Tourmaker">
-            <p class="text-xs text-gray-500 font-bold">※ 상기 일정은 현지 사정에 의하여 변동될 수 있습니다. · [System Powered by TOURMAKER]</p>
+
+        <div class="print-footer print-contacts">
+            <a href="http://tourmaker.kr" target="_blank" rel="noopener" class="brand-link">
+                <i class="fa-solid fa-link"></i> [System Powered by TOURMAKER]
+            </a>
+            <div class="manager-info">
+                <div class="names">담당자 : 이재명 010-9443-7881, 조혁 010-4249-4026</div>
+                <div style="font-size:12px;color:#64748b;margin-top:4px;">가이드 · 기사 미정</div>
+            </div>
         </div>
     </div>
 
