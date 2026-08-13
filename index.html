@@ -138,6 +138,41 @@
             text-align: right; border-left: 3px solid #004098; padding-left: 12px;
         }
         #print-area .print-footer .names { color: #0f172a; font-weight: 700; font-size: 13px; }
+        #print-area .print-page { width: 100%; }
+        #print-area .print-page-2 { page-break-before: always; break-before: page; padding-top: 4px; }
+        #print-area .print-checklist {
+            border: 1px solid #94a3b8; border-radius: 8px; padding: 14px 16px;
+            background: #fff; margin-bottom: 18px;
+        }
+        #print-area .print-checklist h2 {
+            font-size: 15px; font-weight: 800; color: #0f172a; margin: 0 0 12px 0;
+        }
+        #print-area .print-checklist-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px;
+            font-size: 12.5px; color: #334155;
+        }
+        #print-area .print-check-item {
+            display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;
+        }
+        #print-area .print-check-box {
+            width: 14px; height: 14px; border: 1.5px solid #004098; border-radius: 2px;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        #print-area .print-qr-box {
+            display: flex; align-items: center; gap: 18px;
+            padding: 14px 16px; border: 1px solid #e2e8f0; border-radius: 8px;
+            background: #f8fafc; margin-bottom: 18px;
+        }
+        #print-area .print-qr-box img {
+            width: 96px; height: 96px; border: 1px solid #cbd5e1; border-radius: 4px;
+            background: #fff; flex-shrink: 0;
+        }
+        #print-area .print-qr-box .qr-copy { font-size: 12.5px; color: #334155; line-height: 1.55; }
+        #print-area .print-qr-box .qr-copy strong { color: #004098; font-size: 14px; display: block; margin-bottom: 4px; }
+        #print-area .print-qr-box .qr-url { color: #64748b; font-size: 11px; word-break: break-all; }
+        #print-area .print-note-list {
+            font-size: 12px; color: #475569; line-height: 1.55; margin: 0 0 16px 0; padding-left: 18px;
+        }
         @media screen { #print-area { display: none !important; } }
         @media print {
             @page { size: A4 portrait; margin: 12mm 10mm; }
@@ -148,7 +183,8 @@
             #print-area .print-table th { border: 1px solid #1e293b; background: #f8fafc !important; }
             #print-area .print-table td { border: 1px solid #1e293b; }
             #print-area .day-divider td { border-top: 2px solid #1e293b !important; }
-            tr, td { page-break-inside: avoid; }
+            #print-area .print-page-2 { page-break-before: always; break-before: page; }
+            tr, td, .print-checklist, .print-qr-box { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -593,8 +629,10 @@
 
     </div><!-- end print:hidden -->
 
-    <!-- Print A4 (투어메이커 표준 일정표 양식) -->
+    <!-- Print A4 (투어메이커 표준 일정표 양식 · 2페이지) -->
     <div id="print-area">
+        <!-- Page 1: 일정표 -->
+        <div class="print-page">
         <div class="print-header">
             <div class="logo">
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="투어메이커 로고">
@@ -662,6 +700,67 @@
                 <div style="font-size:12px;color:#64748b;margin-top:4px;">가이드 · 기사 미정</div>
             </div>
         </div>
+        </div><!-- end page 1 -->
+
+        <!-- Page 2: 준비물 + 스마트가이드북 QR -->
+        <div class="print-page print-page-2">
+            <div class="print-header">
+                <div class="logo">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" alt="투어메이커 로고">
+                </div>
+                <div class="print-doc-info">문서번호: TM-260911-TB · 2/2</div>
+            </div>
+
+            <div class="print-title">
+                <h1>출발 전 준비물 &amp; 스마트 가이드북</h1>
+            </div>
+
+            <div class="print-overview">
+                <div><span class="label">행사일</span> 2026. 09. 11 (금)</div>
+                <div><span class="label">대상</span> 대한노인회 태백지회</div>
+                <div><span class="label">형태</span> 당일 전세버스</div>
+            </div>
+
+            <div class="print-checklist">
+                <h2>□ 출발 전 준비물 체크리스트</h2>
+                <div class="print-checklist-grid">
+                    <div class="print-check-item"><span class="print-check-box"></span>신분증 (주민등록증·운전면허증 등)</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>편한 운동화</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>얇은 겉옷·바람막이</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>멀미약·개인 상비약</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>보조배터리·충전기</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>접이식 우산</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>모자·선글라스</div>
+                    <div class="print-check-item"><span class="print-check-box"></span>물·간단한 간식</div>
+                </div>
+            </div>
+
+            <ul class="print-note-list">
+                <li>아침고요수목원 산책·삼악산 케이블카가 포함되므로 <strong>편한 신발</strong>을 꼭 챙겨 주세요.</li>
+                <li>이른 출발·저녁 귀환이므로 멀미약·개인 상비약을 지참해 주세요.</li>
+                <li>현장 공지·날씨·동선 변경은 스마트 가이드북에서 가장 빠르게 확인하실 수 있습니다.</li>
+            </ul>
+
+            <div class="print-qr-box">
+                <img src="assets/images/guidebook-qr.png" alt="스마트 가이드북 QR코드" width="96" height="96">
+                <div class="qr-copy">
+                    <strong>📱 스마트 가이드북 바로가기</strong>
+                    QR코드를 스캔하시면 실시간 날씨, 세부 일정, 여행동선,<br>
+                    준비물 체크리스트를 스마트폰에서 확인하실 수 있습니다.<br>
+                    <span class="qr-url">https://indadady.github.io/260911_Chuncheon/</span>
+                </div>
+            </div>
+
+            <div class="print-footer print-contacts">
+                <a href="http://tourmaker.kr" target="_blank" rel="noopener" class="brand-link">
+                    <i class="fa-solid fa-link"></i> [System Powered by TOURMAKER]
+                </a>
+                <div class="manager-info">
+                    <div class="names">담당자 : 이재명 010-9443-7881, 조혁 010-4249-4026</div>
+                    <div style="font-size:12px;color:#64748b;margin-top:4px;">가이드 · 기사 미정</div>
+                </div>
+            </div>
+        </div><!-- end page 2 -->
     </div>
 
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 translate-y-20 opacity-0 bg-slate-900 text-white px-5 py-3 rounded-full text-sm font-bold shadow-xl z-[9999] transition-all duration-300 no-print">
