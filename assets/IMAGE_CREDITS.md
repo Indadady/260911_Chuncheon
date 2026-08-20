@@ -6,6 +6,7 @@
 | og-thumb.jpg | [Commons: File:Soyang River Sky Walk 03.jpg](https://commons.wikimedia.org/wiki/File:Soyang_River_Sky_Walk_03.jpg) | CC / Wikimedia |
 | about-chuncheon.jpg | [Commons: File:SoyangDam.JPG](https://commons.wikimedia.org/wiki/File:SoyangDam.JPG) | CC / Wikimedia |
 | day1-garden.jpg | [Commons: File:View of Garden of Morning Calm.jpg](https://commons.wikimedia.org/wiki/File:View_of_Garden_of_Morning_Calm.jpg) | CC BY-SA |
+| day1-samaksan.jpg | [Commons: File:삼악산 케이블카.jpg](https://commons.wikimedia.org/wiki/File:%EC%82%BC%EC%95%85%EC%82%B0_%EC%BC%80%EC%9D%B4%EB%B8%94%EC%B9%B4.jpg) | CC BY-SA |
 | logo-senior.png | 담당자 제공 (대한노인회 공식 로고) | 제공 자료 |
 
 `og-thumb.jpg`는 9월 초가을 분위기(맑은 하늘·호반)의 춘천 대표 명소 **소양강 스카이워크**로 설정했습니다.  

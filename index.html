@@ -13,9 +13,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[대한노인회 태백지회] 2026 춘천 힐링 당일여행 - 스마트 가이드</title>
-    <meta name="description" content="대한노인회 태백지회 춘천·가평 힐링 당일여행 스마트 가이드북 — 안내 초안">
-    <meta property="og:title" content="[대한노인회 태백지회] 2026 춘천 힐링 당일여행">
-    <meta property="og:description" content="2026. 9. 11(금) 태백 출발 · 춘천·가평 힐링 당일 여정 안내 초안">
+    <meta name="description" content="대한노인회 태백지회 춘천·가평 힐링 당일여행 스마트 가이드북 — 아침고요수목원·삼악산 케이블카 안내">
+    <meta property="og:title" content="대한노인회 태백지회 춘천 가이드북">
+    <meta property="og:description" content="2026. 9. 11(금) 태백 출발 · 아침고요수목원·삼악산 케이블카 힐링 당일 여정">
     <meta property="og:image" content="https://indadady.github.io/260911_Chuncheon/assets/images/og-thumb.jpg">
     <meta property="og:image:width" content="1920">
     <meta property="og:image:height" content="1272">
@@ -52,6 +52,8 @@
             display: block; width: 100%; max-width: 11rem; aspect-ratio: 4/3; object-fit: cover;
             border-radius: 0.75rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15,23,42,0.08); flex-shrink: 0;
         }
+        .spot-cover { width: 100%; height: 14rem; object-fit: cover; display: block; }
+        @media (min-width: 768px) { .spot-cover { height: 16rem; } }
         .schedule-media { display: flex; flex-direction: column; gap: 0.75rem; }
         @media (min-width: 768px) {
             .schedule-media { flex-direction: row; align-items: flex-start; gap: 1rem; }
@@ -209,9 +211,11 @@
                     <a href="#transport" class="px-3 py-2 text-sm font-bold text-sky-600 hover:bg-sky-50 rounded-lg"><i class="fa-solid fa-bus mr-1"></i>이동안내</a>
                     <a href="#map-section" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#004098] rounded-lg">여행동선</a>
                     <a href="#schedule" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-[#004098] rounded-lg">세부일정</a>
+                    <a href="#spots" class="px-3 py-2 text-sm font-bold text-emerald-700 hover:bg-emerald-50 rounded-lg"><i class="fa-solid fa-binoculars mr-1"></i>관광지</a>
                     <a href="#weather-outfit" class="px-3 py-2 text-sm font-bold text-blue-600 hover:bg-blue-50 rounded-lg"><i class="fa-solid fa-cloud-sun-rain mr-1"></i>날씨</a>
                     <a href="#toolkit" class="px-3 py-2 text-sm font-bold text-purple-600 hover:bg-purple-50 rounded-lg"><i class="fa-solid fa-suitcase-rolling mr-1"></i>준비물</a>
                     <a href="#contact" class="px-3 py-2 text-sm font-bold text-red-600 hover:bg-red-50 rounded-lg"><i class="fa-solid fa-phone-volume mr-1"></i>비상연락망</a>
+                    <a href="#tourmaker" class="px-3 py-2 text-sm font-bold text-[#004098] hover:bg-blue-50 rounded-lg"><i class="fa-solid fa-compass mr-1"></i>투어메이커</a>
                 </div>
             </div>
             <button onclick="shareLink()" class="shrink-0 p-2 text-slate-500 hover:text-[#004098] ml-2" aria-label="공유"><i class="fa-solid fa-share-nodes text-xl"></i></button>
@@ -332,7 +336,7 @@
                     </div>
                     <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 text-sm text-amber-800 leading-relaxed">
                         <i class="fa-solid fa-circle-info mr-1"></i>
-                        집결 장소·좌석 배정·기사님 연락처는 행사 임박 시 별도 안내드립니다. 출발 10분 전 탑승을 부탁드립니다.
+                        집결 장소·좌석 배정·버스 승무원 연락처는 행사 임박 시 별도 안내드립니다. 출발 10분 전 탑승을 부탁드립니다.
                     </div>
                 </div>
             </div>
@@ -427,6 +431,7 @@
                         </div>
 
                         <div class="schedule-media">
+                            <img src="assets/images/day1-samaksan.jpg" alt="삼악산 호수케이블카" class="schedule-thumb">
                             <div class="schedule-desc space-y-1">
                                 <p class="text-xs font-black text-cyan-600 tracking-widest">13:40</p>
                                 <h4 class="font-bold text-lg text-slate-800">삼악산 호수케이블카 체험</h4>
@@ -469,6 +474,53 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spot Guide -->
+    <section id="spots" class="py-16 bg-white border-t border-slate-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-12">
+                <span class="text-emerald-600 font-black tracking-widest text-xs uppercase">Spot Guide</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-800 mt-2 font-title">오늘의 핵심 관광지</h2>
+                <p class="text-slate-500 text-sm md:text-base mt-3 leading-relaxed">약 40명 일행이 함께 둘러보는 두 곳입니다. 천천히, 안전하게, 여유롭게 즐기세요.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <article class="bg-slate-50 rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm">
+                    <img src="assets/images/day1-garden.jpg" alt="아침고요수목원 초가을 정원" class="spot-cover">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-full">10:00</span>
+                            <span class="text-xs font-bold text-emerald-700">가평 · 축령산</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black text-slate-800 font-title">아침고요수목원</h3>
+                        <p class="text-slate-600 mt-3 leading-relaxed">초가을 정원 산책으로 여유로운 힐링 시간을 즐깁니다. 축령산 자락의 한국형 테마 정원으로, 20여 개 정원이 산책로로 이어집니다.</p>
+                        <ul class="mt-5 space-y-2.5 text-sm text-slate-600 leading-relaxed">
+                            <li class="flex gap-2"><i class="fa-solid fa-location-dot text-emerald-600 mt-1 shrink-0"></i><span>경기 가평군 상면 수목원로 432</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-leaf text-emerald-600 mt-1 shrink-0"></i><span><strong>하경정원</strong>은 한반도 지형을 본뜬 대표 공간입니다. 전망대에서 정원 전체를 한눈에 담아 보세요.</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-seedling text-emerald-600 mt-1 shrink-0"></i><span>9월에는 <strong>나무수국·팜파스그라스</strong>가 가을의 시작을 알립니다. 야생화정원과 잣나무숲은 천천히 걷기 좋습니다.</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-person-walking text-emerald-600 mt-1 shrink-0"></i><span>편한 운동화, 그늘 휴식, 인솔자 집결 시간을 꼭 지켜 주세요. 무리해서 높은 코스까지 오르지 않으셔도 됩니다.</span></li>
+                        </ul>
+                    </div>
+                </article>
+                <article class="bg-slate-50 rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm">
+                    <img src="assets/images/day1-samaksan.jpg" alt="삼악산 호수케이블카와 의암호 전경" class="spot-cover object-top">
+                    <div class="p-6 md:p-8">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-cyan-600 text-white text-xs font-black px-3 py-1 rounded-full">13:40</span>
+                            <span class="text-xs font-bold text-cyan-700">춘천 · 의암호</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-black text-slate-800 font-title">삼악산 호수케이블카 체험</h3>
+                        <p class="text-slate-600 mt-3 leading-relaxed">의암호 위를 가로지르는 삼악산 케이블카로 춘천 호반 전경을 감상합니다. 국내 최장 3.61km 호수 케이블카입니다.</p>
+                        <ul class="mt-5 space-y-2.5 text-sm text-slate-600 leading-relaxed">
+                            <li class="flex gap-2"><i class="fa-solid fa-location-dot text-cyan-600 mt-1 shrink-0"></i><span>강원특별자치도 춘천시 스포츠타운길 245 · 문의 1588-4888</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-cable-car text-cyan-600 mt-1 shrink-0"></i><span>왕복 약 30~40분. 8인승 캐빈으로 의암호를 건너 삼악산 상부까지 오릅니다. 일부는 바닥이 투명한 크리스탈 캐빈입니다.</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-mountain-sun text-cyan-600 mt-1 shrink-0"></i><span>상부 정류장과 스카이워크에서 춘천 시내·호반이 한눈에 들어옵니다. 단체 이동이므로 하차 후 인솔자 안내에 따라 주세요.</span></li>
+                            <li class="flex gap-2"><i class="fa-solid fa-shirt text-cyan-600 mt-1 shrink-0"></i><span>캐빈 안은 냉난방이 없습니다. 얇은 겉옷을 챙기시고, 높은 곳이 불편하시면 현장 인솔자에게 미리 말씀해 주세요. 강풍 시 운행이 조정될 수 있습니다.</span></li>
+                        </ul>
+                    </div>
+                </article>
             </div>
         </div>
     </section>
@@ -552,30 +604,38 @@
                 <h2 class="text-3xl font-bold text-slate-800 font-title">🚨 비상 연락망</h2>
                 <p class="text-sm text-slate-500 mt-2">안전하고 편안한 당일 여행을 위해 투어메이커가 함께합니다.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-orange-50 transition-all">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div class="bg-slate-50 p-7 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-orange-50 transition-all">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-user-tie text-orange-600 text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl text-slate-800">투어메이커 총괄 대표</h4>
+                    <h4 class="font-bold text-lg text-slate-800">투어메이커 총괄 대표</h4>
                     <p class="text-sm text-slate-500 mt-1 mb-5">행사 기획 및 총괄 관리</p>
-                    <a href="tel:010-9443-7881" class="bg-orange-600 text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-orange-700 transition">이재명 대표: 010-9443-7881</a>
+                    <a href="tel:010-9443-7881" class="bg-orange-600 text-white px-5 py-3 rounded-xl font-bold shadow-md hover:bg-orange-700 transition text-sm">이재명 대표<br>010-9443-7881</a>
                 </div>
-                <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-teal-50 transition-all">
+                <div class="bg-slate-50 p-7 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-indigo-50 transition-all">
+                    <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-helmet-safety text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg text-slate-800">현장총괄이사</h4>
+                    <p class="text-sm text-slate-500 mt-1 mb-5">현장 인솔 및 안전 총괄</p>
+                    <a href="tel:010-3841-1361" class="bg-indigo-600 text-white px-5 py-3 rounded-xl font-bold shadow-md hover:bg-indigo-700 transition text-sm">정두영 이사<br>010-3841-1361</a>
+                </div>
+                <div class="bg-slate-50 p-7 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-teal-50 transition-all">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-map-location-dot text-teal-600 text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl text-slate-800">현장 지원</h4>
+                    <h4 class="font-bold text-lg text-slate-800">현장 지원</h4>
                     <p class="text-sm text-slate-500 mt-1 mb-5">일정 코디네이팅 및 비상 대기</p>
-                    <a href="tel:010-4249-4026" class="bg-teal-600 text-white px-8 py-3 rounded-xl font-bold shadow-md hover:bg-teal-700 transition">조혁 이사: 010-4249-4026</a>
+                    <a href="tel:010-4249-4026" class="bg-teal-600 text-white px-5 py-3 rounded-xl font-bold shadow-md hover:bg-teal-700 transition text-sm">조혁 이사<br>010-4249-4026</a>
                 </div>
-                <div class="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-blue-50 transition-all">
+                <div class="bg-slate-50 p-7 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center group hover:bg-blue-50 transition-all">
                     <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-bus text-blue-600 text-2xl"></i>
                     </div>
-                    <h4 class="font-bold text-xl text-slate-800">전일정 버스 기사</h4>
+                    <h4 class="font-bold text-lg text-slate-800">전일정 버스 승무원</h4>
                     <p class="text-sm text-slate-500 mt-1 mb-5">전 구간 버스 운행 및 이동 지원</p>
-                    <span class="bg-blue-100 text-blue-700 px-8 py-3 rounded-xl font-bold">가이드 · 기사 미정</span>
+                    <span class="bg-blue-100 text-blue-700 px-5 py-3 rounded-xl font-bold text-sm">가이드 · 승무원 미정</span>
                 </div>
             </div>
         </div>
@@ -607,6 +667,58 @@
                 <p class="text-sm md:text-base font-medium leading-relaxed">
                     본 행사는 종이 인쇄물을 대체하는 스마트 가이드북 도입을 통해 자원 낭비를 막고 탄소 배출을 줄이는 디지털 전환(DX) 실천 사례입니다.
                 </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tourmaker -->
+    <section id="tourmaker" class="py-20 bg-[#004098] text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 20% 20%, #fff 0, transparent 40%), radial-gradient(circle at 80% 80%, #7dd3fc 0, transparent 35%);"></div>
+        <div class="container mx-auto px-4 max-w-6xl relative">
+            <div class="text-center mb-12">
+                <span class="text-sky-200 font-black tracking-widest text-xs uppercase">Travel Tech Partner</span>
+                <h2 class="text-2xl md:text-4xl font-black mt-3 font-title leading-tight">이 가이드북은 투어메이커가 만들었습니다</h2>
+                <p class="text-sky-100 mt-4 text-base md:text-lg leading-relaxed max-w-3xl mx-auto">약 40명 일행이 같은 일정·날씨·연락망을 스마트폰 하나로 확인합니다. 카카오톡으로 가족·지인에게 공유하시면, 당일 여정과 함께 투어메이커를 자연스럽게 소개할 수 있습니다.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-5 mb-12">
+                <div class="bg-white/10 backdrop-blur rounded-3xl p-6 border border-white/15">
+                    <div class="w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center mb-4"><i class="fa-solid fa-mobile-screen-button text-xl"></i></div>
+                    <h3 class="font-bold text-lg mb-2">스마트 가이드북</h3>
+                    <p class="text-sky-100 text-sm leading-relaxed">종이 일정표 대신 URL 하나. 일정·동선 지도·실시간 날씨·비상연락망을 일행 모두가 동시에 봅니다.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-3xl p-6 border border-white/15">
+                    <div class="w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center mb-4"><i class="fa-solid fa-shield-heart text-xl"></i></div>
+                    <h3 class="font-bold text-lg mb-2">시니어·복지단체 맞춤</h3>
+                    <p class="text-sky-100 text-sm leading-relaxed">편한 동선, 현장 인솔, 비상 연락 체계. 대한노인회 태백지회처럼 단체 당일·힐링 여행을 안전하게 운영합니다.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-3xl p-6 border border-white/15">
+                    <div class="w-12 h-12 bg-white/15 rounded-2xl flex items-center justify-center mb-4"><i class="fa-solid fa-route text-xl"></i></div>
+                    <h3 class="font-bold text-lg mb-2">다음 여행도 함께</h3>
+                    <p class="text-sky-100 text-sm leading-relaxed">효도여행, 친목회, 제주·국내 전세버스, 해외 연수까지. 학교·관공서가 맡기는 기획력으로 개인·단체 일정도 설계합니다.</p>
+                </div>
+            </div>
+            <div class="bg-white text-slate-800 rounded-[2rem] p-7 md:p-10 flex flex-col md:flex-row md:items-center gap-8 shadow-2xl">
+                <div class="flex-1">
+                    <p class="text-xs font-black tracking-widest text-[#004098] uppercase mb-2">Share this guidebook</p>
+                    <h3 class="text-xl md:text-2xl font-black font-title">가족에게 이 페이지를 보내 주세요</h3>
+                    <p class="text-slate-500 mt-3 text-sm md:text-base leading-relaxed">카톡 공유 한 번이면 일정과 현장 연락처가 그대로 전달됩니다. 다음 단체 여행·효도여행이 필요하시면 투어메이커로 문의해 주세요.</p>
+                    <div class="mt-5 flex flex-wrap gap-3 text-sm font-bold">
+                        <a href="tel:010-9443-7881" class="text-[#004098]">이재명 대표 010-9443-7881</a>
+                        <span class="text-slate-300">·</span>
+                        <a href="tel:010-3841-1361" class="text-[#004098]">정두영 현장총괄이사 010-3841-1361</a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-3 shrink-0 w-full md:w-auto">
+                    <button type="button" onclick="shareLink()" class="bg-[#004098] text-white px-6 py-3.5 rounded-2xl font-bold shadow-md hover:bg-[#002d6b] transition text-center">
+                        <i class="fa-solid fa-share-nodes mr-2"></i>가이드북 공유하기
+                    </button>
+                    <a href="https://tourmaker.kr" target="_blank" rel="noopener" class="bg-white border-2 border-[#004098] text-[#004098] px-6 py-3.5 rounded-2xl font-bold hover:bg-sky-50 transition text-center">
+                        투어메이커 홈페이지
+                    </a>
+                    <a href="tel:010-3841-1361" class="bg-indigo-50 text-indigo-700 px-6 py-3.5 rounded-2xl font-bold hover:bg-indigo-100 transition text-center">
+                        현장총괄 정두영 이사 전화
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -646,7 +758,7 @@
 
         <div class="print-overview">
             <div><span class="label">행사기간</span> 2026. 09. 11 (금) · 당일</div>
-            <div><span class="label">행사인원</span> 37~39명 예상</div>
+            <div><span class="label">행사인원</span> 약 40명</div>
             <div><span class="label">이용교통</span> 전세버스 · 숙박 없음</div>
         </div>
 
@@ -696,8 +808,8 @@
                 <i class="fa-solid fa-link"></i> [System Powered by TOURMAKER]
             </a>
             <div class="manager-info">
-                <div class="names">담당자 : 이재명 010-9443-7881, 조혁 010-4249-4026</div>
-                <div style="font-size:12px;color:#64748b;margin-top:4px;">가이드 · 기사 미정</div>
+                <div class="names">담당자 : 이재명 010-9443-7881, 정두영 010-3841-1361, 조혁 010-4249-4026</div>
+                <div style="font-size:12px;color:#64748b;margin-top:4px;">버스 승무원 미정</div>
             </div>
         </div>
         </div><!-- end page 1 -->
@@ -756,8 +868,8 @@
                     <i class="fa-solid fa-link"></i> [System Powered by TOURMAKER]
                 </a>
                 <div class="manager-info">
-                    <div class="names">담당자 : 이재명 010-9443-7881, 조혁 010-4249-4026</div>
-                    <div style="font-size:12px;color:#64748b;margin-top:4px;">가이드 · 기사 미정</div>
+                    <div class="names">담당자 : 이재명 010-9443-7881, 정두영 010-3841-1361, 조혁 010-4249-4026</div>
+                    <div style="font-size:12px;color:#64748b;margin-top:4px;">버스 승무원 미정</div>
                 </div>
             </div>
         </div><!-- end page 2 -->
@@ -793,6 +905,12 @@
             '물·간단한 간식'
         ];
 
+        const PRINT_FILENAME = '260911_춘천_일정표';
+        const PAGE_TITLE = document.title;
+        const SHARE_TITLE = '대한노인회 태백지회 춘천 가이드북';
+        window.addEventListener('beforeprint', () => { document.title = PRINT_FILENAME; });
+        window.addEventListener('afterprint', () => { document.title = PAGE_TITLE; });
+
         function printSchedule() { window.print(); }
         function showToast(msg) {
             const t = document.getElementById('toast');
@@ -802,8 +920,8 @@
         }
         function shareLink() {
             const url = window.location.href;
-            if (navigator.share) navigator.share({ title: '춘천 당일여행 가이드북', url }).catch(()=>{});
-            else navigator.clipboard.writeText(url).then(() => showToast('링크가 복사되었습니다.'));
+            if (navigator.share) navigator.share({ title: SHARE_TITLE, url }).catch(()=>{});
+            else navigator.clipboard.writeText(url).then(() => showToast('링크가 복사되었습니다. 카톡으로 공유해 보세요.'));
         }
         function updateDday() {
             const today = new Date(); today.setHours(0,0,0,0);
