@@ -21,6 +21,8 @@
     <meta property="og:image:height" content="1272">
     <meta property="og:image:alt" content="춘천 소양강 스카이워크 — 9월 초가을 전경">
     <link rel="icon" type="image/png" href="assets/images/logo-senior.png">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -37,17 +39,55 @@
             background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat;
         }
         @media (max-width: 768px){ .hero-bg { background-attachment: scroll; } }
-        #map { height: 500px; width: 100%; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 10; }
+        #map { height: 540px; width: 100%; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); z-index: 10; }
+        .leaflet-tooltip { font-family: 'Noto Sans KR', sans-serif; font-weight: 700; font-size: 12px; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.18); border-radius: 8px; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         section { scroll-margin-top: 80px; }
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes floatIn {
+            from { opacity: 0; transform: scale(.8) translateY(16px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
-        .custom-icon div { box-shadow: 0 4px 8px rgba(0,0,0,0.2); border: 2.5px solid white; }
+        .custom-icon { background: transparent; border: none; }
+        .map-pin-wrap { display: flex; flex-direction: column; align-items: center; }
+        .map-pin-dot {
+            width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: #fff;
+            border: 2.5px solid rgba(255,255,255,0.95);
+            box-shadow: 0 10px 18px rgba(15,23,42,0.18);
+            animation: floatIn .2s ease-out forwards;
+        }
+        .map-pin-label {
+            margin-top: 3px;
+            background: rgba(255,255,255,0.96);
+            color: #0f172a;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.2;
+            padding: 2px 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(15,23,42,0.12);
+        }
+        .map-pin-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #004098;
+            color: #fff;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.2;
+            padding: 2px 5px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
         .schedule-thumb {
             display: block; width: 100%; max-width: 11rem; aspect-ratio: 4/3; object-fit: cover;
             border-radius: 0.75rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15,23,42,0.08); flex-shrink: 0;
@@ -347,21 +387,22 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-slate-800 font-title tracking-tight">한눈에 보는 여행 동선</h2>
-                <p class="text-slate-500 mt-2 text-sm italic">마커에 마우스를 올리면 장소명을 확인할 수 있습니다.</p>
+                <p class="text-slate-500 mt-2 text-sm italic">오전·오후·귀환을 누르면 이동 동선이 이어집니다. 마커에 마우스를 올리면 장소명을 확인할 수 있습니다.</p>
             </div>
 
-            <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <div class="flex flex-wrap justify-center gap-2 mb-3">
                 <button onclick="filterMap('all')" id="btn-map-all" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-slate-800 text-white shadow-lg transition-all">전체 일정</button>
                 <button onclick="filterMap('day1')" id="btn-map-day1" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-orange-50 transition-all">오전</button>
                 <button onclick="filterMap('day2')" id="btn-map-day2" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-blue-50 transition-all">오후</button>
                 <button onclick="filterMap('day3')" id="btn-map-day3" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-green-50 transition-all">귀환</button>
             </div>
-            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 오전·오후·귀환 동선을 한눈에 확인</p>
+            <p class="text-center text-[11px] font-black text-[#004098] mb-2">출발 · 도착 · 태백</p>
+            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 태백에서 출발해 귀환까지 동선을 한눈에 확인합니다</p>
 
             <div class="max-w-5xl mx-auto border-8 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden bg-white relative z-10">
                 <div id="map"></div>
-                <div class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
-                    <i class="fa-solid fa-map-location-dot text-orange-500 mr-1"></i> 동선 렌더링 중...
+                <div id="map-status" class="absolute top-4 left-4 z-[400] bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl shadow font-bold text-xs text-slate-700 pointer-events-none">
+                    <i class="fa-solid fa-flag-checkered text-orange-500 mr-1"></i><span id="map-status-text">출발·도착 · 태백</span>
                 </div>
             </div>
             <div class="max-w-5xl mx-auto mt-6 flex flex-wrap justify-center gap-6 text-[11px] font-bold text-slate-500">
@@ -977,234 +1018,144 @@
         }
         fetchWeather();
 
-        /* ===== 지도 (선이 출발→도착으로 스르륵 + 이동 마커) ===== */
+        /* ===== 지도 (태백해설사 가이드북과 동일한 Esri 공개 타일, 키 없음) ===== */
         let mapInited = false;
-        let dayLayers = {};
         let currentMap = null;
-        let allSpots = {};
-        let routePaths = {};
-        let animToken = 0;
-        let travelerMarker = null;
+        let mapLayers = [];
         const mapHints = {
-            all: '전체 일정 — 태백에서 출발해 귀환까지 동선이 차례로 그려집니다',
-            day1: '오전 동선 — 태백 → 영월랜드(조식) → 아침고요수목원 → 힐링닭갈비(중식)',
-            day2: '오후 동선 — 힐링닭갈비 → 삼악산 케이블카 → 시니어클럽 → 샤브올데이 제천영천점',
-            day3: '귀환 동선 — 제천 → 태백 도착·해산'
+            all: '전체 일정 — 태백에서 출발해 귀환까지 동선을 한눈에 확인합니다',
+            day1: '오전 동선 — 태백(출발) → 영월랜드(조식) → 아침고요수목원 → 힐링닭갈비(중식)',
+            day2: '오후 동선 — 힐링닭갈비 → 삼악산 케이블카 → 시니어클럽 → 샤브올데이',
+            day3: '귀환 동선 — 샤브올데이 제천영천점 → 태백 도착·해산'
         };
+        const spots = {
+            taebaek: { coords: [37.1641, 128.9856], title: '태백', color: '#004098', icon: '🚌', badge: '출발·도착' },
+            yeongwol: { coords: [37.1732, 128.3221], title: '영월랜드', color: '#f97316', icon: '🍳' },
+            garden: { coords: [37.7436, 127.3524], title: '아침고요수목원', color: '#16a34a', icon: '🌿' },
+            lunch: { coords: [37.784654, 127.514686], title: '힐링닭갈비', color: '#f97316', icon: '🍗' },
+            samaksan: { coords: [37.8690, 127.6926], title: '삼악산 케이블카', color: '#3b82f6', icon: '🚠' },
+            senior: { coords: [37.8813, 127.7400], title: '춘천 시니어클럽', color: '#3b82f6', icon: '🤝' },
+            jecheon: { coords: [37.1275, 128.2029], title: '샤브올데이', color: '#22c55e', icon: '🍲' }
+        };
+        const routes = {
+            all: {
+                points: ['taebaek', 'yeongwol', 'garden', 'lunch', 'samaksan', 'senior', 'jecheon'],
+                lines: [
+                    { latlngs: [spots.taebaek.coords, spots.yeongwol.coords, spots.garden.coords, spots.lunch.coords], color: '#f97316' },
+                    { latlngs: [spots.lunch.coords, spots.samaksan.coords, spots.senior.coords, spots.jecheon.coords], color: '#3b82f6' },
+                    { latlngs: [spots.jecheon.coords, spots.taebaek.coords], color: '#22c55e' }
+                ]
+            },
+            day1: {
+                points: ['taebaek', 'yeongwol', 'garden', 'lunch'],
+                lines: [{ latlngs: [spots.taebaek.coords, spots.yeongwol.coords, spots.garden.coords, spots.lunch.coords], color: '#f97316' }]
+            },
+            day2: {
+                points: ['lunch', 'samaksan', 'senior', 'jecheon'],
+                lines: [{ latlngs: [spots.lunch.coords, spots.samaksan.coords, spots.senior.coords, spots.jecheon.coords], color: '#3b82f6' }]
+            },
+            day3: {
+                points: ['jecheon', 'taebaek'],
+                lines: [{ latlngs: [spots.jecheon.coords, spots.taebaek.coords], color: '#22c55e' }]
+            }
+        };
+
+        function setMapStatus(text) {
+            const el = document.getElementById('map-status-text');
+            if (el) el.textContent = text;
+        }
+
+        function animateLine(polyline) {
+            setTimeout(() => {
+                const path = polyline.getElement();
+                if (!path || typeof path.getTotalLength !== 'function') return;
+                const length = path.getTotalLength();
+                path.style.transition = 'none';
+                path.style.strokeDasharray = length + ' ' + length;
+                path.style.strokeDashoffset = length;
+                path.getBoundingClientRect();
+                path.style.transition = 'stroke-dashoffset 0.9s ease-in-out';
+                path.style.strokeDashoffset = '0';
+            }, 50);
+        }
+
+        function pinIcon(spot) {
+            return L.divIcon({
+                className: 'custom-icon',
+                html: `<div class="map-pin-wrap">
+                    <div class="map-pin-dot" style="background:${spot.color};position:relative;">${spot.icon}${spot.badge ? `<span class="map-pin-badge">${spot.badge}</span>` : ''}</div>
+                    <span class="map-pin-label">${spot.title}</span>
+                </div>`,
+                iconSize: [92, 56],
+                iconAnchor: [46, 18]
+            });
+        }
+
+        function drawMap(routeKey) {
+            if (!currentMap) return;
+            mapLayers.forEach(layer => currentMap.removeLayer(layer));
+            mapLayers = [];
+            const routeData = routes[routeKey] || routes.all;
+            const hint = mapHints[routeKey] || '';
+            const hintEl = document.getElementById('map-hint');
+            if (hintEl) hintEl.textContent = hint;
+            setMapStatus(hint);
+
+            routeData.lines.forEach(lineDef => {
+                const polyline = L.polyline(lineDef.latlngs, { color: lineDef.color, weight: 5, opacity: 0.9 }).addTo(currentMap);
+                animateLine(polyline);
+                mapLayers.push(polyline);
+            });
+
+            const bounds = L.latLngBounds([]);
+            routeData.points.forEach(key => {
+                const spot = spots[key];
+                const marker = L.marker(spot.coords, { icon: pinIcon(spot) })
+                    .addTo(currentMap)
+                    .bindTooltip(spot.title, { direction: 'top', offset: [0, -18] });
+                mapLayers.push(marker);
+                bounds.extend(spot.coords);
+            });
+            currentMap.fitBounds(bounds, { padding: [56, 56], maxZoom: routeKey === 'all' ? 8 : 11 });
+            setTimeout(() => currentMap.invalidateSize(), 120);
+        }
 
         function initMap() {
             if (mapInited || !window.L) return;
             mapInited = true;
-
-            const spots = {
-                taebaek: [37.1641, 128.9856],
-                yeongwol: [37.1732, 128.3221],
-                garden: [37.7436, 127.3524],
-                lunch: [37.784654, 127.514686],
-                samaksan: [37.8690, 127.6926],
-                senior: [37.8813, 127.7400],
-                jecheon: [37.1275, 128.2029]
-            };
-            allSpots = spots;
-
             currentMap = L.map('map', { scrollWheelZoom: false });
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(currentMap);
-
-            const createIcon = (color, emoji, idx) => L.divIcon({
-                className: 'custom-icon',
-                html: `<div style="background-color:${color}; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; opacity:0; animation:popIn 0.5s forwards; animation-delay:${idx * 0.15}s;">${emoji}</div>`,
-                iconSize: [36, 36], iconAnchor: [18, 18], tooltipAnchor: [0, -18]
-            });
-
-            const markers = {
-                tb: L.marker(spots.taebaek, { icon: createIcon('#f97316', '🚌', 1) }).bindTooltip('태백 (출발·도착)', { direction: 'top' }),
-                yw: L.marker(spots.yeongwol, { icon: createIcon('#f97316', '🍳', 2) }).bindTooltip('영월랜드 (조식)', { direction: 'top' }),
-                gd: L.marker(spots.garden, { icon: createIcon('#f97316', '🌿', 3) }).bindTooltip('아침고요수목원', { direction: 'top' }),
-                ln: L.marker(spots.lunch, { icon: createIcon('#f97316', '🍗', 4) }).bindTooltip('힐링닭갈비 (중식·가평)', { direction: 'top' }),
-                sa: L.marker(spots.samaksan, { icon: createIcon('#3b82f6', '🚠', 1) }).bindTooltip('삼악산 호수케이블카', { direction: 'top' }),
-                sn: L.marker(spots.senior, { icon: createIcon('#3b82f6', '🤝', 2) }).bindTooltip('춘천 시니어클럽', { direction: 'top' }),
-                jc: L.marker(spots.jecheon, { icon: createIcon('#3b82f6', '🍲', 3) }).bindTooltip('샤브올데이 제천영천점', { direction: 'top' })
-            };
-
-            routePaths = {
-                d1: L.polyline([spots.taebaek, spots.yeongwol, spots.garden, spots.lunch], { color: '#f97316', weight: 5, opacity: 0.85 }),
-                d2: L.polyline([spots.lunch, spots.samaksan, spots.senior, spots.jecheon], { color: '#3b82f6', weight: 5, opacity: 0.85 }),
-                d3: L.polyline([spots.jecheon, spots.taebaek], { color: '#22c55e', weight: 5, opacity: 0.85 })
-            };
-
-            dayLayers = {
-                day1: L.layerGroup([routePaths.d1, markers.tb, markers.yw, markers.gd, markers.ln]),
-                day2: L.layerGroup([routePaths.d2, markers.ln, markers.sa, markers.sn, markers.jc]),
-                day3: L.layerGroup([routePaths.d3, markers.jc, markers.tb])
-            };
-            filterMap('all');
+            // Carto 공개 타일은 키 없이 요청하면 타일 위에 "API key required"가 찍힘.
+            // 태백해설사 가이드북과 같이 키 없는 Esri 공개 타일을 사용.
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri'
+            }).addTo(currentMap);
+            drawMap('all');
         }
 
-        function clearTraveler() {
-            if (travelerMarker && currentMap) {
-                currentMap.removeLayer(travelerMarker);
-                travelerMarker = null;
-            }
-        }
-
-        function latLngAlong(latlngs, t) {
-            if (!latlngs.length) return null;
-            if (t <= 0) return L.latLng(latlngs[0]);
-            if (t >= 1) return L.latLng(latlngs[latlngs.length - 1]);
-            let total = 0;
-            const segs = [];
-            for (let i = 0; i < latlngs.length - 1; i++) {
-                const a = L.latLng(latlngs[i]);
-                const b = L.latLng(latlngs[i + 1]);
-                const d = a.distanceTo(b);
-                segs.push({ a, b, d });
-                total += d;
-            }
-            let remain = total * t;
-            for (const s of segs) {
-                if (remain <= s.d || s.d === 0) {
-                    const r = s.d ? remain / s.d : 0;
-                    return L.latLng(
-                        s.a.lat + (s.b.lat - s.a.lat) * r,
-                        s.a.lng + (s.b.lng - s.a.lng) * r
-                    );
-                }
-                remain -= s.d;
-            }
-            return L.latLng(latlngs[latlngs.length - 1]);
-        }
-
-        function animateTraveler(latlngs, duration, token, color) {
-            return new Promise(resolve => {
-                if (!latlngs || latlngs.length < 2) { resolve(); return; }
-                clearTraveler();
-                const start = L.latLng(latlngs[0]);
-                travelerMarker = L.circleMarker(start, {
-                    radius: 8, color: '#fff', weight: 3, fillColor: color || '#f97316', fillOpacity: 1
-                }).addTo(currentMap);
-                const t0 = performance.now();
-                function frame(now) {
-                    if (token !== animToken) { clearTraveler(); resolve(); return; }
-                    const p = Math.min(1, (now - t0) / duration);
-                    const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-                    const ll = latLngAlong(latlngs, eased);
-                    if (ll) travelerMarker.setLatLng(ll);
-                    if (p < 1) requestAnimationFrame(frame);
-                    else resolve();
-                }
-                requestAnimationFrame(frame);
-            });
-        }
-
-        function animatePath(layer, duration, token) {
-            return new Promise(resolve => {
-                const run = () => {
-                    if (token !== animToken) { resolve(); return; }
-                    const path = layer._path;
-                    if (!path) { resolve(); return; }
-                    const len = path.getTotalLength();
-                    path.style.transition = 'none';
-                    path.style.strokeDasharray = `${len}`;
-                    path.style.strokeDashoffset = `${len}`;
-                    // force reflow
-                    void path.getBoundingClientRect();
-                    path.style.transition = `stroke-dashoffset ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
-                    path.style.strokeDashoffset = '0';
-                    setTimeout(() => {
-                        if (token === animToken) {
-                            path.style.transition = '';
-                            path.style.strokeDasharray = '';
-                            path.style.strokeDashoffset = '';
-                        }
-                        resolve();
-                    }, duration + 40);
-                };
-                // wait one frame so SVG path exists after layer add
-                requestAnimationFrame(() => setTimeout(run, 40));
-            });
-        }
-
-        async function playRouteAnimation(keys, token) {
-            for (const key of keys) {
-                if (token !== animToken) return;
-                const layer = routePaths[key];
-                if (!layer) continue;
-                const latlngs = layer.getLatLngs().map(ll => [ll.lat, ll.lng]);
-                const duration = key === 'd1' ? 2800 : key === 'd2' ? 1800 : 2400;
-                const color = key === 'd1' ? '#f97316' : key === 'd2' ? '#3b82f6' : '#22c55e';
-                await Promise.all([
-                    animatePath(layer, duration, token),
-                    animateTraveler(latlngs, duration, token, color)
-                ]);
-            }
-            if (token === animToken) setTimeout(clearTraveler, 400);
-        }
-
-        function popMarkers(layerGroup, token) {
-            layerGroup.eachLayer(layer => {
-                if (!(layer instanceof L.Marker)) return;
-                const originalIcon = layer.options.icon;
-                layer.setIcon(L.divIcon({ className: 'hidden' }));
-                setTimeout(() => {
-                    if (token === animToken) layer.setIcon(originalIcon);
-                }, 50);
-            });
-        }
-
-        window.filterMap = function (day) {
-            if (!currentMap) return;
-            animToken += 1;
-            const token = animToken;
-            clearTraveler();
-
+        window.filterMap = function(day) {
             document.querySelectorAll('.map-btn').forEach(btn => {
                 btn.classList.remove('bg-slate-800', 'text-white');
                 btn.classList.add('bg-white', 'text-slate-600');
             });
-            const activeBtn = document.getElementById('btn-map-' + day);
-            if (activeBtn) {
-                activeBtn.classList.replace('bg-white', 'bg-slate-800');
-                activeBtn.classList.replace('text-slate-600', 'text-white');
+            const targetBtn = document.getElementById('btn-map-' + day);
+            if (targetBtn) {
+                targetBtn.classList.remove('bg-white', 'text-slate-600');
+                targetBtn.classList.add('bg-slate-800', 'text-white');
             }
-
-            const hint = document.getElementById('map-hint');
-            if (hint) hint.textContent = mapHints[day] || '';
-
-            Object.values(dayLayers).forEach(l => currentMap.removeLayer(l));
-
-            let targetBounds;
-            let keys = [];
-            if (day === 'all') {
-                Object.values(dayLayers).forEach(l => l.addTo(currentMap));
-                targetBounds = L.latLngBounds(Object.values(allSpots));
-                keys = ['d1', 'd2', 'd3'];
-                Object.values(dayLayers).forEach(l => popMarkers(l, token));
-            } else {
-                dayLayers[day].addTo(currentMap);
-                targetBounds = dayLayers[day].getBounds ? dayLayers[day].getBounds() : L.latLngBounds(Object.values(allSpots));
-                keys = [day === 'day1' ? 'd1' : day === 'day2' ? 'd2' : 'd3'];
-                popMarkers(dayLayers[day], token);
+            if (!currentMap) {
+                initMap();
+                if (day !== 'all') drawMap(day);
+                return;
             }
-
-            const maxZoom = day === 'all' ? 8 : 11;
-            currentMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom });
-            // hide lines first, then draw start→end
-            keys.forEach(k => {
-                const el = routePaths[k] && routePaths[k]._path;
-                if (el) {
-                    const len = el.getTotalLength ? el.getTotalLength() : 1000;
-                    el.style.transition = 'none';
-                    el.style.strokeDasharray = `${len}`;
-                    el.style.strokeDashoffset = `${len}`;
-                }
-            });
-            setTimeout(() => playRouteAnimation(keys, token), 280);
+            drawMap(day);
         };
 
         const io = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) { initMap(); io.disconnect(); }
         }, { threshold: 0.1 });
-        io.observe(document.getElementById('map-section'));
+        const mapSection = document.getElementById('map-section');
+        if (mapSection) io.observe(mapSection);
     </script>
 </body>
 </html>
