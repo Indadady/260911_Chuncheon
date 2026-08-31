@@ -88,6 +88,16 @@
             border-radius: 999px;
             white-space: nowrap;
         }
+        .map-bus {
+            font-size: 22px;
+            line-height: 1;
+            filter: drop-shadow(0 4px 8px rgba(15,23,42,0.35));
+            transform: translateZ(0);
+        }
+        @media (max-width: 768px) {
+            #map { height: 460px; }
+            .map-pin-dot { animation-duration: .45s; }
+        }
         .schedule-thumb {
             display: block; width: 100%; max-width: 11rem; aspect-ratio: 4/3; object-fit: cover;
             border-radius: 0.75rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 12px rgba(15,23,42,0.08); flex-shrink: 0;
@@ -387,7 +397,7 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-slate-800 font-title tracking-tight">한눈에 보는 여행 동선</h2>
-                <p class="text-slate-500 mt-2 text-sm italic">오전·오후·귀환을 누르면 이동 동선이 이어집니다. 마커에 마우스를 올리면 장소명을 확인할 수 있습니다.</p>
+                <p class="text-slate-500 mt-2 text-sm italic">실제 도로를 따라 이동 순서가 천천히 그려집니다. 오전·오후·귀환을 누르면 해당 구간만 볼 수 있습니다.</p>
             </div>
 
             <div class="flex flex-wrap justify-center gap-2 mb-3">
@@ -397,7 +407,7 @@
                 <button onclick="filterMap('day3')" id="btn-map-day3" class="map-btn px-6 py-2 rounded-full text-sm font-bold bg-white border border-slate-200 text-slate-600 hover:bg-green-50 transition-all">귀환</button>
             </div>
             <p class="text-center text-[11px] font-black text-[#004098] mb-2">출발 · 도착 · 태백</p>
-            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 태백에서 출발해 귀환까지 동선을 한눈에 확인합니다</p>
+            <p id="map-hint" class="text-center text-xs text-slate-500 mb-4 font-medium">전체 일정 — 태백에서 출발해 귀환까지 실제 도로 동선</p>
 
             <div class="max-w-5xl mx-auto border-8 border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden bg-white relative z-10">
                 <div id="map"></div>
@@ -1018,12 +1028,15 @@
         }
         fetchWeather();
 
-        /* ===== 지도 (태백해설사 가이드북과 동일한 Esri 공개 타일, 키 없음) ===== */
+        /* ===== 지도 (함백중과 동일: OSRM 실제 도로 + 모바일에서 순차·천천히 재생) ===== */
         let mapInited = false;
         let currentMap = null;
         let mapLayers = [];
+        let mapDrawSeq = 0;
+        let activeBus = null;
+        const osrmCache = {};
         const mapHints = {
-            all: '전체 일정 — 태백에서 출발해 귀환까지 동선을 한눈에 확인합니다',
+            all: '전체 일정 — 태백에서 출발해 귀환까지 실제 도로 동선',
             day1: '오전 동선 — 태백(출발) → 영월랜드(조식) → 아침고요수목원 → 힐링닭갈비(중식)',
             day2: '오후 동선 — 힐링닭갈비 → 삼악산 케이블카 → 시니어클럽 → 샤브올데이',
             day3: '귀환 동선 — 샤브올데이 제천영천점 → 태백 도착·해산'
@@ -1041,44 +1054,32 @@
             all: {
                 points: ['taebaek', 'yeongwol', 'garden', 'lunch', 'samaksan', 'senior', 'jecheon'],
                 lines: [
-                    { latlngs: [spots.taebaek.coords, spots.yeongwol.coords, spots.garden.coords, spots.lunch.coords], color: '#f97316' },
-                    { latlngs: [spots.lunch.coords, spots.samaksan.coords, spots.senior.coords, spots.jecheon.coords], color: '#3b82f6' },
-                    { latlngs: [spots.jecheon.coords, spots.taebaek.coords], color: '#22c55e' }
+                    { pts: ['taebaek', 'yeongwol', 'garden', 'lunch'], color: '#f97316' },
+                    { pts: ['lunch', 'samaksan', 'senior', 'jecheon'], color: '#3b82f6' },
+                    { pts: ['jecheon', 'taebaek'], color: '#22c55e' }
                 ]
             },
             day1: {
                 points: ['taebaek', 'yeongwol', 'garden', 'lunch'],
-                lines: [{ latlngs: [spots.taebaek.coords, spots.yeongwol.coords, spots.garden.coords, spots.lunch.coords], color: '#f97316' }]
+                lines: [{ pts: ['taebaek', 'yeongwol', 'garden', 'lunch'], color: '#f97316' }]
             },
             day2: {
                 points: ['lunch', 'samaksan', 'senior', 'jecheon'],
-                lines: [{ latlngs: [spots.lunch.coords, spots.samaksan.coords, spots.senior.coords, spots.jecheon.coords], color: '#3b82f6' }]
+                lines: [{ pts: ['lunch', 'samaksan', 'senior', 'jecheon'], color: '#3b82f6' }]
             },
             day3: {
                 points: ['jecheon', 'taebaek'],
-                lines: [{ latlngs: [spots.jecheon.coords, spots.taebaek.coords], color: '#22c55e' }]
+                lines: [{ pts: ['jecheon', 'taebaek'], color: '#22c55e' }]
             }
         };
 
+        function isMobileView() {
+            return window.matchMedia('(max-width: 768px)').matches;
+        }
         function setMapStatus(text) {
             const el = document.getElementById('map-status-text');
             if (el) el.textContent = text;
         }
-
-        function animateLine(polyline) {
-            setTimeout(() => {
-                const path = polyline.getElement();
-                if (!path || typeof path.getTotalLength !== 'function') return;
-                const length = path.getTotalLength();
-                path.style.transition = 'none';
-                path.style.strokeDasharray = length + ' ' + length;
-                path.style.strokeDashoffset = length;
-                path.getBoundingClientRect();
-                path.style.transition = 'stroke-dashoffset 0.9s ease-in-out';
-                path.style.strokeDashoffset = '0';
-            }, 50);
-        }
-
         function pinIcon(spot) {
             return L.divIcon({
                 className: 'custom-icon',
@@ -1090,34 +1091,173 @@
                 iconAnchor: [46, 18]
             });
         }
-
-        function drawMap(routeKey) {
-            if (!currentMap) return;
-            mapLayers.forEach(layer => currentMap.removeLayer(layer));
+        function busIcon() {
+            return L.divIcon({
+                className: 'custom-icon',
+                html: '<div class="map-bus">🚌</div>',
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+        }
+        function clearMapLayers() {
+            if (activeBus) activeBus._aborted = true;
+            activeBus = null;
+            mapLayers.forEach(layer => {
+                if (layer._aborted !== undefined) layer._aborted = true;
+                currentMap.removeLayer(layer);
+            });
             mapLayers = [];
+        }
+        async function roadPath(pts) {
+            const key = pts.map(p => p.join(',')).join('|');
+            if (osrmCache[key]) return osrmCache[key];
+            try {
+                const coords = pts.map(p => `${p[1]},${p[0]}`).join(';');
+                const res = await fetch(`https://router.project-osrm.org/route/v1/driving/${coords}?overview=full&geometries=geojson`);
+                const data = await res.json();
+                if (data.code === 'Ok' && data.routes && data.routes[0]) {
+                    const path = data.routes[0].geometry.coordinates.map(([lng, lat]) => [lat, lng]);
+                    osrmCache[key] = path;
+                    return path;
+                }
+            } catch (e) { /* fall back to straight line */ }
+            return pts;
+        }
+        function lineDuration(pixelLength) {
+            const mobile = isMobileView();
+            const min = mobile ? 2800 : 1400;
+            const max = mobile ? 5600 : 2800;
+            const pxPerMs = mobile ? 0.12 : 0.28;
+            return Math.max(min, Math.min(max, pixelLength / pxPerMs));
+        }
+        function whenPathReady(polyline) {
+            return new Promise(resolve => {
+                let tries = 24;
+                const tick = () => {
+                    const el = polyline.getElement();
+                    if (el && typeof el.getTotalLength === 'function') resolve(el);
+                    else if (tries-- > 0) requestAnimationFrame(tick);
+                    else resolve(null);
+                };
+                requestAnimationFrame(tick);
+            });
+        }
+        function animateLine(polyline, duration) {
+            return new Promise(async resolve => {
+                const path = await whenPathReady(polyline);
+                if (!path) { resolve(duration); return; }
+                const length = path.getTotalLength();
+                const ms = duration || lineDuration(length);
+                path.style.transition = 'none';
+                path.style.strokeDasharray = length + ' ' + length;
+                path.style.strokeDashoffset = String(length);
+                path.getBoundingClientRect();
+                path.style.transition = `stroke-dashoffset ${ms}ms ease-in-out`;
+                path.style.strokeDashoffset = '0';
+                setTimeout(() => resolve(ms), ms + 40);
+            });
+        }
+        function moveMarkerAlong(marker, latlngs, duration) {
+            return new Promise(resolve => {
+                if (!marker || !latlngs || latlngs.length < 2) { resolve(); return; }
+                const dists = [0];
+                let total = 0;
+                for (let i = 1; i < latlngs.length; i++) {
+                    total += L.latLng(latlngs[i - 1]).distanceTo(L.latLng(latlngs[i]));
+                    dists.push(total);
+                }
+                if (total === 0) { resolve(); return; }
+                const start = performance.now();
+                const ease = t => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                function frame(now) {
+                    if (marker._aborted) { resolve(); return; }
+                    const t = Math.min(1, (now - start) / duration);
+                    const target = total * ease(t);
+                    let i = 1;
+                    while (i < dists.length && dists[i] < target) i++;
+                    const a = latlngs[i - 1];
+                    const b = latlngs[Math.min(i, latlngs.length - 1)];
+                    const span = (dists[i] - dists[i - 1]) || 1;
+                    const f = (target - dists[i - 1]) / span;
+                    marker.setLatLng([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]);
+                    if (t < 1) requestAnimationFrame(frame);
+                    else resolve();
+                }
+                requestAnimationFrame(frame);
+            });
+        }
+
+        async function drawMap(routeKey) {
+            if (!currentMap) return;
+            const seq = ++mapDrawSeq;
+            clearMapLayers();
             const routeData = routes[routeKey] || routes.all;
             const hint = mapHints[routeKey] || '';
             const hintEl = document.getElementById('map-hint');
             if (hintEl) hintEl.textContent = hint;
-            setMapStatus(hint);
+            setMapStatus('실제 도로 동선을 불러오는 중...');
 
+            const bounds = L.latLngBounds(routeData.points.map(key => spots[key].coords));
+            currentMap.fitBounds(bounds, { padding: [56, 56], maxZoom: routeKey === 'all' ? 8 : 11 });
+            setTimeout(() => currentMap.invalidateSize(), 120);
+
+            const legs = [];
             routeData.lines.forEach(lineDef => {
-                const polyline = L.polyline(lineDef.latlngs, { color: lineDef.color, weight: 5, opacity: 0.9 }).addTo(currentMap);
-                animateLine(polyline);
-                mapLayers.push(polyline);
+                for (let i = 0; i < lineDef.pts.length - 1; i++) {
+                    legs.push({ from: lineDef.pts[i], to: lineDef.pts[i + 1], color: lineDef.color });
+                }
             });
+            const paths = await Promise.all(legs.map(leg => roadPath([spots[leg.from].coords, spots[leg.to].coords])));
+            if (seq !== mapDrawSeq) return;
 
-            const bounds = L.latLngBounds([]);
-            routeData.points.forEach(key => {
+            paths.forEach(path => path.forEach(pt => bounds.extend(pt)));
+            currentMap.fitBounds(bounds, { padding: [56, 56], maxZoom: routeKey === 'all' ? 8 : 11 });
+            await new Promise(r => setTimeout(r, 280));
+            if (seq !== mapDrawSeq) return;
+
+            const ghost = L.polyline(paths.flat(), { color: '#94a3b8', weight: 4, opacity: 0.22, lineJoin: 'round', lineCap: 'round' }).addTo(currentMap);
+            mapLayers.push(ghost);
+
+            const placed = new Set();
+            const addPin = (key) => {
+                if (placed.has(key)) return;
+                placed.add(key);
                 const spot = spots[key];
-                const marker = L.marker(spot.coords, { icon: pinIcon(spot) })
+                const marker = L.marker(spot.coords, { icon: pinIcon(spot), zIndexOffset: 200 })
                     .addTo(currentMap)
                     .bindTooltip(spot.title, { direction: 'top', offset: [0, -18] });
                 mapLayers.push(marker);
-                bounds.extend(spot.coords);
-            });
-            currentMap.fitBounds(bounds, { padding: [56, 56], maxZoom: routeKey === 'all' ? 8 : 11 });
-            setTimeout(() => currentMap.invalidateSize(), 120);
+            };
+            addPin(legs[0].from);
+
+            const bus = L.marker(spots[legs[0].from].coords, { icon: busIcon(), zIndexOffset: 900 }).addTo(currentMap);
+            bus._aborted = false;
+            activeBus = bus;
+            mapLayers.push(bus);
+
+            for (let i = 0; i < legs.length; i++) {
+                if (seq !== mapDrawSeq) return;
+                const leg = legs[i];
+                const path = paths[i];
+                setMapStatus(`${spots[leg.from].title} → ${spots[leg.to].title}`);
+                const poly = L.polyline(path, { color: leg.color, weight: 5, opacity: 0.95, lineJoin: 'round', lineCap: 'round' }).addTo(currentMap);
+                mapLayers.push(poly);
+                const ready = await whenPathReady(poly);
+                const ms = lineDuration(ready ? ready.getTotalLength() : 400);
+                await Promise.all([
+                    animateLine(poly, ms),
+                    moveMarkerAlong(bus, path, ms)
+                ]);
+                if (seq !== mapDrawSeq) return;
+                addPin(leg.to);
+                await new Promise(r => setTimeout(r, isMobileView() ? 320 : 160));
+            }
+            if (seq !== mapDrawSeq) return;
+            setMapStatus(hint);
+            if (bus && currentMap.hasLayer(bus)) currentMap.removeLayer(bus);
+            mapLayers = mapLayers.filter(layer => layer !== bus);
+            if (activeBus === bus) activeBus = null;
+            setTimeout(() => currentMap.invalidateSize(), 160);
         }
 
         function initMap() {
@@ -1130,7 +1270,18 @@
                 maxZoom: 19,
                 attribution: 'Tiles &copy; Esri'
             }).addTo(currentMap);
-            drawMap('all');
+            drawMap(isMobileView() ? 'day1' : 'all');
+            if (isMobileView()) {
+                document.querySelectorAll('.map-btn').forEach(btn => {
+                    btn.classList.remove('bg-slate-800', 'text-white');
+                    btn.classList.add('bg-white', 'text-slate-600');
+                });
+                const morning = document.getElementById('btn-map-day1');
+                if (morning) {
+                    morning.classList.remove('bg-white', 'text-slate-600');
+                    morning.classList.add('bg-slate-800', 'text-white');
+                }
+            }
         }
 
         window.filterMap = function(day) {
@@ -1145,7 +1296,7 @@
             }
             if (!currentMap) {
                 initMap();
-                if (day !== 'all') drawMap(day);
+                if (day !== (isMobileView() ? 'day1' : 'all')) drawMap(day);
                 return;
             }
             drawMap(day);
